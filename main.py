@@ -2,6 +2,9 @@ import cv2
 import numpy as np
 import os
 
+
+
+
 def stack_images(scale, img_array):
     rows = len(img_array)
     cols = len(img_array[0])
@@ -34,18 +37,25 @@ def stack_images(scale, img_array):
     return ver
 
 # Read The input image
-path = "dataset//ahte_train_binary_images/moc_test_8.png"
+path = "dataset//ahte_train_pixel_label/book1_page19.png"
 img = cv2.imread(path)
 imgDraw = cv2.imread(path)
 # Convert the image to gray scale
-imgGray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+imgGray = cv2.cvtColor(src=img, code=cv2.COLOR_BGR2GRAY)
+
+
+
 
 # Blureing the image using kernel
 imgBlur = cv2.GaussianBlur(imgGray, (7, 7), 0)
 
-# Apply OTSU threshold
-ret, thresh1 = cv2.threshold(imgBlur, 0, 255, cv2.THRESH_OTSU + cv2.THRESH_BINARY_INV)
 
+#image_binarization
+ret, thresh1 = cv2.threshold(imgBlur, 0, 255, cv2.THRESH_TOZERO_INV + cv2.THRESH_OTSU )
+
+
+
+    
 # declare a kernel
 kernel = np.ones((3, 4), np.int8)
 
@@ -53,10 +63,10 @@ kernel = np.ones((3, 4), np.int8)
 img_morpo = cv2.morphologyEx(imgGray, op=cv2.MORPH_ERODE,  kernel=kernel)
 
 # Apply erosion
-img_erosion = cv2.erode(thresh1, kernel, iterations=4, borderType=0, borderValue=255)
+img_erosion = cv2.erode(thresh1, kernel, iterations=6, borderType=0, borderValue=255)
 
 # Apply dilation
-img_dilation = cv2.dilate(thresh1, kernel, iterations=8, borderType=1 ,borderValue=0)
+img_dilation = cv2.dilate(thresh1, kernel, iterations=4, borderType=1 ,borderValue=0)
 blur2 = cv2.GaussianBlur(img_erosion, (1, 1), 0)
 
 # draw a rectangle around the paragraph
@@ -65,14 +75,14 @@ cnts = cnts[0] if len(cnts) == 2 else cnts[1]
 
 for c in cnts:
         x, y, w, h = cv2.boundingRect(c)
-        cv2.rectangle(img, (x, y), (x + w, y + h), (255, 0, 0), 3)
+        cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 3)
 
 # select the paragraphs in hand line
 cntsDraw = cv2.findContours(img_dilation, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
 cntsDraw = cntsDraw[0] if len(cntsDraw) == 2 else cntsDraw[1]
 
 for c in cntsDraw:
-    cv2.drawContours(imgDraw, c, -1, (0, 0, 255), 4)
+    cv2.drawContours(imgDraw, c, -1, (0, 255, 0), 4)
 
 
 # Resize the image
