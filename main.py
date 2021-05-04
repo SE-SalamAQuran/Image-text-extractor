@@ -37,7 +37,7 @@ def stack_images(scale, img_array):
     return ver
 
 # Read The input image
-path = "dataset//ahte_train_pixel_label/book1_page19.png"
+path = "dataset//ahte_test_polygon_label/book1_page11.png"
 img = cv2.imread(path)
 imgDraw = cv2.imread(path)
 # Convert the image to gray scale
@@ -54,7 +54,7 @@ imgBlur = cv2.GaussianBlur(imgGray, (7, 7), 0)
 ret, thresh1 = cv2.threshold(imgBlur, 0, 255, cv2.THRESH_TOZERO_INV + cv2.THRESH_OTSU )
 
 
-
+cv2.imshow("thresh" ,thresh1)
     
 # declare a kernel
 kernel = np.ones((3, 4), np.int8)
@@ -94,7 +94,6 @@ imgStack = stack_images(1, ([img, imgDraw, imgBlur],[img_erosion,img_dilation,im
 
 
 
-# cv2.absdiff(img, mask, "out.png")
 cv2.imshow('Output draw', imgDraw)
 cv2.imwrite("output.png", imgDraw)
 cv2.waitKey(0)
