@@ -37,7 +37,7 @@ def stack_images(scale, img_array):
     return ver
 
 # Read The input image
-path = "dataset//ahte_test_polygon_label/book1_page11.png"
+path = "dataset//ahte_train_polygon_label/book1_page19.png"
 img = cv2.imread(path)
 imgDraw = cv2.imread(path)
 # Convert the image to gray scale
@@ -54,12 +54,11 @@ imgBlur = cv2.GaussianBlur(imgGray, (7, 7), 0)
 ret, thresh1 = cv2.threshold(imgBlur, 0, 255, cv2.THRESH_TOZERO_INV + cv2.THRESH_OTSU )
 
 
-cv2.imshow("thresh" ,thresh1)
     
 # declare a kernel
 kernel = np.ones((3, 4), np.int8)
 
-#morpology
+#morphology
 img_morpo = cv2.morphologyEx(imgGray, op=cv2.MORPH_ERODE,  kernel=kernel)
 
 # Apply erosion
@@ -69,7 +68,7 @@ img_erosion = cv2.erode(thresh1, kernel, iterations=6, borderType=0, borderValue
 img_dilation = cv2.dilate(thresh1, kernel, iterations=4, borderType=1 ,borderValue=0)
 blur2 = cv2.GaussianBlur(img_erosion, (1, 1), 0)
 
-# draw a rectangle around the paragraph
+# draw a rectangle around the line
 cnts = cv2.findContours(img_dilation, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 cnts = cnts[0] if len(cnts) == 2 else cnts[1]
 
@@ -77,7 +76,7 @@ for c in cnts:
         x, y, w, h = cv2.boundingRect(c)
         cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 3)
 
-# select the paragraphs in hand line
+
 cntsDraw = cv2.findContours(img_dilation, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
 cntsDraw = cntsDraw[0] if len(cntsDraw) == 2 else cntsDraw[1]
 
