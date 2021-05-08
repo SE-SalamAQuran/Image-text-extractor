@@ -1,3 +1,4 @@
+# import lirary
 import cv2
 import numpy as np
 import os
@@ -37,6 +38,11 @@ def stack_images(scale, img_array):
     return ver
 
 # Read The input image
+
+
+
+
+
 path = "dataset//ahte_train_polygon_label/book1_page19.png"
 img = cv2.imread(path)
 imgDraw = cv2.imread(path)
@@ -82,6 +88,8 @@ cntsDraw = cntsDraw[0] if len(cntsDraw) == 2 else cntsDraw[1]
 
 for c in cntsDraw:
     cv2.drawContours(imgDraw, c, -1, (0, 255, 0), 4)
+
+
 
 
 # Resize the image

@@ -6,6 +6,8 @@ import numpy as np
 #Because our program worked fine for images with white bgs at first but not at all for images with black bgs
 #Eventually, after the going through the openCV documentation we found out that our binarization, i.e: threshholding was incorrect.
 
+#mohye Ahmad 1162843
+#Salam quran 
 
 class ColorAnalyzer():
     def __init__(self, imageLoc):
